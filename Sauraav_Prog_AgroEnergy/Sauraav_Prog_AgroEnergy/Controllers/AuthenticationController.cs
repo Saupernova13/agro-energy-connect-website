@@ -16,7 +16,7 @@ namespace Sauraav_Prog_AgroEnergy.Controllers
 
         public AuthenticationController()
         {
-            _authProvider = new FirebaseAuthProvider(new FirebaseConfig("AIzaSyANoHZ_GAyvljFQOuinn-a3oVTknLgrWJE"));
+            _authProvider = new FirebaseAuthProvider(new FirebaseConfig("Enter_Key_Here"));
         }
 
         [HttpGet]

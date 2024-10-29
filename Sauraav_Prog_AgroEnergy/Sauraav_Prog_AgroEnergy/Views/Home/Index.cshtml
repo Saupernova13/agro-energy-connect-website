@@ -1,0 +1,157 @@
+﻿@{
+    ViewData["Title"] = "Welcome to Agro Energy Connect";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        h1, h2, h3 {
+            font-weight: bold;
+        }
+        .content-box {
+            background-color: rgba(255, 255, 255, 0.6);
+            border-radius: 25px;
+            padding: 10px;
+            margin: 20px 0;
+        }
+
+        .our-mission-padding {
+            text-align: center;
+            color: #ffffff;
+            padding-top: 400px;
+            padding-bottom: 100px;
+        }
+
+            .our-mission-padding .content-box {
+                background-color: rgba(255, 223, 93, 0.8);
+            }
+
+            .our-mission-padding h1 {
+                font-size: 3.5rem;
+                margin-bottom: 20px;
+                font-weight: bold;
+            }
+
+            .our-mission-padding p {
+                font-size: 1.5rem;
+                margin-bottom: 40px;
+            }
+
+        .cover {
+            padding: 50px 0;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 1);
+        }
+
+        .hero-section {
+            padding: 60px 0;
+            text-align: center;
+            color: #ffffff;
+        }
+
+            .hero-section .content-box {
+                background-color: rgba(255, 223, 93, 0.8);
+            }
+
+            .hero-section h1 {
+                font-size: 3.5rem;
+                margin-bottom: 20px;
+                font-weight: bold;
+            }
+
+            .hero-section p {
+                font-size: 1.5rem;
+                margin-bottom: 40px;
+            }
+
+
+        .feature {
+            margin-bottom: 30px;
+            text-align: center;
+            color: #5eb57a;
+        }
+
+            .feature .content-box {
+                background-color: rgba(94, 181, 122, 0.8);
+            }
+
+            .feature h3 {
+                color: #5eb57a;
+                margin-bottom: 15px;
+                font-weight: bold;
+            }
+
+            .feature p {
+                font-size: 1rem;
+            }
+
+        .about-section {
+            padding: 60px 0;
+            text-align: center;
+            color: #ffffff;
+        }
+
+            .about-section h2 {
+                color: #ffdf5d;
+                margin-bottom: 40px;
+                font-weight: bold;
+            }
+
+            .about-section p {
+                font-size: 1.2rem;
+            }
+
+            .about-section .content-box {
+                background-color: rgba(255, 223, 93, 0.8);
+            }
+    </style>
+</head>
+<body>
+    <div class="hero-section">
+        <div class="container">
+            <div class="content-box">
+                <h1>Welcome to Agro Energy Connect!</h1>
+                <p>Empowering farmers, fostering community, and promoting sustainability.</p>
+            </div>
+        </div>
+    </div>
+    </br>
+    <div class="feature cover">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 feature-history-left">
+                    <h3>Our Features</h3>
+                    <ul>
+                        <li>Engage with fellow farmers, share insights, and learn from each other.</li>
+                        <li>Marketplace tailored to the needs of farmers, where you can buy, sell, and trade diverse agricultural products.</li>
+                        <li>Advocate for green practices, clean energy solutions, and sustainable agriculture.</li>
+                    </ul>
+                </div>
+                <div class="col-md-6 feature-history-right">
+                    <h3>Our History</h3>
+                    <p>Agro Energy Connect was founded with the vision of revolutionizing the agricultural industry by leveraging community and technology. We aim to bring farmers closer together, foster collaboration, and promote sustainable agricultural practices. With a commitment to green energy and eco-friendly initiatives, we are dedicated to making a positive impact on the environment and the farming community.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="our-mission-padding">
+        <div class="container">
+            <div class="content-box">
+                <h2>Our Mission</h2>
+                <p>Our mission is to create a thriving community where farmers can interact, collaborate, trade, and promote sustainable practices together. Together, we are transforming the agricultural industry, making it more efficient, sustainable, and community-centric.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

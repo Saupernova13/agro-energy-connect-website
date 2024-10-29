@@ -1,0 +1,104 @@
+﻿@model Sauraav_Prog_AgroEnergy.Models.ItemModel
+@{
+    ViewData["Title"] = "Edit Item";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .edit-item-container {
+            padding-top: 75px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .edit-item-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+            .edit-item-box h2 {
+                color: #5eb57a;
+                font-weight: bold;
+                margin-bottom: 1.5rem;
+            }
+
+            .edit-item-box .form-group label {
+                font-weight: bold;
+                color: #333;
+            }
+
+            .edit-item-box .btn-primary {
+                background-color: #5eb57a;
+                border-color: #5eb57a;
+            }
+
+                .edit-item-box .btn-primary:hover {
+                    background-color: #4da966;
+                    border-color: #4da966;
+                }
+
+        .form-control, .form-control-file {
+            border-radius: 5px;
+        }
+
+        .img-preview {
+            max-height: 100px;
+            max-width: 100px;
+            object-fit: cover;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container edit-item-container">
+        <div class="edit-item-box">
+            <h2>@ViewData["Title"]</h2>
+            <form asp-action="EditItem" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="itemName">Item Name</label>
+                    <input type="text" class="form-control" id="itemName" name="itemName" value="@Model.itemName" required />
+                </div>
+                <div class="form-group">
+                    <label for="itemPrice">Price</label>
+                    <input type="number" class="form-control" id="itemPrice" name="itemPrice" value="@Model.itemPrice" required />
+                </div>
+                <div class="form-group">
+                    <label for="itemCategory">Category</label>
+                    <input type="text" class="form-control" id="itemCategory" name="itemCategory" value="@Model.itemCategory" required />
+                </div>
+                <div class="form-group">
+                    <label for="itemDescription">Description</label>
+                    <textarea class="form-control" id="itemDescription" name="itemDescription" required>@Model.itemDescription</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="itemImage">Image</label>
+                    <input type="file" class="form-control-file" id="itemImage" name="itemImage" />
+                    @if (!string.IsNullOrEmpty(Model.itemImageAsBase64))
+                    {
+                        <img src="data:image;base64,@Model.itemImageAsBase64" class="img-preview" alt="Current Image" />
+                    }
+                </div>
+                <input type="hidden" name="itemID" value="@Model.itemID" />
+                <input type="hidden" name="FarmerUID" value="@Model.FarmerUID" />
+                <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+            </form>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

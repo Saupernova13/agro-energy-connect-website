@@ -1,0 +1,123 @@
+﻿@model Sauraav_Prog_AgroEnergy.Models.FarmerModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .register-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 85vh;
+        }
+
+        .register-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+            .register-box h4 {
+                color: #5eb57a;
+                font-weight: bold;
+                margin-bottom: 1.5rem;
+            }
+
+            .register-box .form-group label {
+                font-weight: bold;
+                color: #333;
+            }
+
+            .register-box .btn-primary {
+                background-color: #5eb57a;
+                border-color: #5eb57a;
+            }
+
+                .register-box .btn-primary:hover {
+                    background-color: #4da966;
+                    border-color: #4da966;
+                }
+
+            .register-box a {
+                color: #5eb57a;
+                text-decoration: none;
+            }
+
+                .register-box a:hover {
+                    color: #4da966;
+                    text-decoration: underline;
+                }
+
+        .form-control {
+            border-radius: 5px;
+        }
+
+        .space-bottom {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <br />
+    <div class="register-container">
+        <div class="register-box">
+            <h4>@ViewData["Title"]</h4>
+            <form asp-action="Register" method="post" enctype="multipart/form-data">
+                <div class="form-group space-bottom">
+                    <label asp-for="accountEmail" class="control-label">Enter Account Email</label>
+                    <input asp-for="accountEmail" class="form-control" />
+                </div>
+                <div class="form-group space-bottom">
+                    <label asp-for="accountPassword" class="control-label">Enter Account Password</label>
+                    <input asp-for="accountPassword" class="form-control" type="password" />
+                </div>
+                <div class="form-group space-bottom">
+                    <label asp-for="FarmerName" class="control-label">Enter Your First Name</label>
+                    <input asp-for="FarmerName" class="form-control" />
+                </div>
+                <div class="form-group space-bottom">
+                    <label asp-for="FarmerSurname" class="control-label">Enter Your Last Name</label>
+                    <input asp-for="FarmerSurname" class="form-control" />
+                </div>
+                <div class="form-group space-bottom">
+                    <label asp-for="FarmerLocation" class="control-label">Enter Your Location</label>
+                    <input asp-for="FarmerLocation" class="form-control" />
+                </div>
+                <div class="form-group space-bottom">
+                    <label class="control-label">Profile Image</label>
+                    <input type="file" name="FarmerProfileImage" class="form-control" />
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+            </form>
+            <br />
+            <div>
+                <a asp-action="Login">Already have an account? Login</a>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>

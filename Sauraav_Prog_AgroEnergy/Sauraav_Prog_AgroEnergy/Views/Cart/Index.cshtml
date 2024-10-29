@@ -1,0 +1,185 @@
+﻿@model List<Sauraav_Prog_AgroEnergy.Models.ItemModel>
+
+@{
+    ViewData["Title"] = "Cart";
+    double totalPrice = Model.Sum(item => item.itemPrice);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .cart-container {
+            padding-top: 75px;
+        }
+
+        .cart-heading {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .cart-table img {
+            max-height: 100px;
+            max-width: 100px;
+            object-fit: cover;
+        }
+
+        .cart-table th, .cart-table td {
+            vertical-align: middle;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-color: #ddd;
+        }
+
+        .cart-table th {
+            background-color: #5eb57a;
+            color: #fff;
+        }
+
+        .cart-actions .btn-danger {
+            background-color: #ff4242;
+            border-color: #ff4242;
+        }
+
+            .cart-actions .btn-danger:hover {
+                background-color: #e03939;
+                border-color: #e03939;
+            }
+
+        .cart-actions .btn-success {
+            background-color: #5eb57a;
+            border-color: #5eb57a;
+        }
+
+            .cart-actions .btn-success:hover {
+                background-color: #4da966;
+                border-color: #4da966;
+            }
+
+        .total-price-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: right;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 1.5rem;
+        }
+
+        .btn-inverse {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+            .btn-inverse:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
+    </style>
+</head>
+<body>
+    <div class="container cart-container mt-4">
+        <div class="cart-heading">
+            <h2 style="color: #5eb57a">Your Cart</h2>
+        </div>
+        @if (Model != null && Model.Count > 0)
+        {
+            <table class="table table-striped cart-table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">Image</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("ItemDetails", "Item", new { itemId = item.itemID })">
+                                    @if (!string.IsNullOrEmpty(item.itemImageAsBase64))
+                                    {
+                                        <img src="data:image;base64,@item.itemImageAsBase64" alt="@item.itemName" />
+                                    }
+                                    else
+                                    {
+                                        <img src="~/images/no-image.png" alt="No image" />
+                                    }
+                                </a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("ItemDetails", "Item", new { itemId = item.itemID })">@item.itemName</a>
+                            </td>
+                            <td style="color: #5eb57a">R @item.itemPrice</td>
+                            <td class="cart-actions">
+                                <button class="btn btn-danger" onclick="removeFromCart(@item.itemID)">Remove</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="total-price-box">
+                <h4 style="color: #5eb57a">Total Price: R @totalPrice</h4>
+                <button class="btn btn-success" onclick="checkoutCart()">Checkout</button>
+            </div>
+        }
+        else
+        {
+            <div class="cart-heading">
+                <p>Your cart is empty.</p>
+            </div>
+        }
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @section Scripts {
+        <script>
+            async function removeFromCart(itemId) {
+                const response = await fetch('/Cart/RemoveFromCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(itemId)
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    alert("Failed to remove item from cart");
+                }
+            }
+
+            async function checkoutCart() {
+                const response = await fetch('/Cart/Checkout', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                if (response.ok) {
+                    alert("Checkout complete");
+                    location.reload();
+                } else {
+                    alert("Failed to checkout cart");
+                }
+            }
+        </script>
+    }
+    }
+</body>
+<br />
+<br />
+<br />
+</html>

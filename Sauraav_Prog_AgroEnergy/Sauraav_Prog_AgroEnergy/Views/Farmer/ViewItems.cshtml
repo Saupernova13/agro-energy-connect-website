@@ -1,0 +1,91 @@
+﻿@model List<Sauraav_Prog_AgroEnergy.Models.ItemModel>
+@{
+    ViewData["Title"] = "View Items";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .view-items-container {
+            padding-top: 75px;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .card h5 {
+                color: #5eb57a;
+                font-weight: bold;
+            }
+
+            .card .card-body {
+                padding: 10px;
+            }
+
+            .card .card-footer {
+                background-color: transparent;
+                border-top: none;
+                padding-bottom: 20px;
+            }
+
+            .card .btn-primary {
+                background-color: #ffdf5d;
+                border-color: #ffdf5d;
+            }
+
+                .card .btn-primary:hover {
+                    background-color: #e6c750;
+                    border-color: #e6c750;
+                }
+
+        .card-img-top {
+            height: 225px;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="container view-items-container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(item.itemImageAsBase64))
+                        {
+                            <img src="data:image;base64,@item.itemImageAsBase64" class="card-img-top" alt="@item.itemName" />
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@item.itemName</h5>
+                            <p class="card-text">
+                                Price: R @item.itemPrice
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="@Url.Action("ItemDetails", "Item", new { itemId = item.itemID })" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <br />
+    <br />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

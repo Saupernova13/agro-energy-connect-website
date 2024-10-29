@@ -1,0 +1,156 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agro Energy Connect By Sauraav Jayrajh</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Sauraav_Prog_AgroEnergy.styles.css" asp-append-version="true" />
+    <link rel="shortcut icon" type="image/x-icon"  href="~/images/favicon.ico"/>
+    <link href="~/css/bootstrap.css" rel="stylesheet" />
+    <style>
+        body {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/images/pexels-pixabay-265216.jpg);
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        .navbar {
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+        .footer {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            text-align: center;
+            padding: 1rem 0;
+            border-top: 1px solid #dee2e6;
+        }
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .navbar-nav .nav-link {
+            color: #555;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: #007bff;
+            }
+
+        .navbar-nav .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+
+        .profile-picture {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-left: 15px;
+            display: inline-block;
+        }
+
+        .dropdown-toggle::after {
+            display: none;
+        }
+
+        .navbar-nav .navbar-text {
+            margin-right: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img height="50" width="50" src="~/images/aec_colour.png" /><img height="50" src="~/images/aec_text_logo.png" /></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        @if (Context.Session.GetString("currentUser") != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" style="color: #FFA300" asp-area="" asp-controller="Item" asp-action="Marketplace">Marketplace</a>
+                            </li>
+                        }
+                    </ul>
+                    <div class="navbar-nav">
+                        @if (Context.Session.GetString("currentUser") != null)
+                        {
+                            <span class="navbar-text">Welcome, @Context.Session.GetString("userName")!</span>
+
+                            @if (Context.Session.GetString("userRole") == "farmer")
+                            {
+                                <a class="nav-link" style="color: #FFA300" asp-area="" asp-controller="Farmer" asp-action="AddItem">Add Item</a>
+                                <a class="nav-link" style="color: #FFA300" asp-area="" asp-controller="Farmer" asp-action="FarmerProfile">View Profile</a>
+                                <a class="nav-link" style="color: #FFA300" asp-area="" asp-controller="Farmer" asp-action="ViewItems">View My Listings</a>
+                                <a class="nav-link" style="color: #FFA300" asp-area="" asp-controller="Cart" asp-action="Index">Cart</a>
+                            }
+                            <form method="post" asp-controller="Authentication" asp-action="Logout" class="nav-link"
+                                  style="margin:0; padding: 0;">
+                                <button style="color: #FFA300" type="submit" class="btn btn-link">Logout</button>
+                            </form>
+                            <div class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    @if (!string.IsNullOrEmpty(Context.Session.GetString("profileImageBase64")))
+                                    {
+                                        <img src="data:image;base64,@Context.Session.GetString("profileImageBase64")" class="profile-picture" alt="Profile Picture" />
+                                    }
+                                    else
+                                    {
+                                        <div style="color: #FFA300" class="profile-picture-text">My Account</div>
+                                    }
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                                    @if (Context.Session.GetString("userRole") == "farmer")
+                                    {
+                                        <li><a class="dropdown-item" style="color: #FFA300" asp-area="" asp-controller="Farmer" asp-action="FarmerProfile">View Profile</a></li>
+                                        <li><a class="dropdown-item" style="color: #FFA300" asp-area="" asp-controller="Farmer" asp-action="ViewItems">View My Listings</a></li>
+                                    }
+                                    <li><a class="dropdown-item" style="color: #FFA300" asp-area="" asp-controller="Cart" asp-action="Index">My Cart</a></li>
+                                    <li>
+                                        <form method="post" asp-controller="Authentication" asp-action="Logout" class="dropdown-item"
+                                              style="margin:0; padding: 0;">
+                                            <button style="color: #FFA300" type="submit" class="btn btn-link">Logout</button>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <a class="nav-link" style="color: #FFA300" asp-area="" asp-controller="Authentication" asp-action="Register">Register</a>
+                            <a class="nav-link" style="color: #FFA300" asp-area="" asp-controller="Authentication" asp-action="Login">Login</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="footer border-top text-muted">
+        <div class="container">
+            &copy; Sauraav Jayrajh (2024) - <a asp-area="" asp-controller="Home" asp-action="Privacy">View Our Privacy Policy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

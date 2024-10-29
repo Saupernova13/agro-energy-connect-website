@@ -1,0 +1,152 @@
+﻿@model Sauraav_Prog_AgroEnergy.Models.FarmerProfileViewModel
+@{
+    ViewData["Title"] = "Farmer Profile";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .profile-container {
+            padding-top: 75px;
+        }
+        .profile-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+            .profile-box h2, .profile-box h3 {
+                color: #5eb57a;
+                font-weight: bold;
+            }
+
+            .profile-box p {
+                color: #333;
+                font-size: 1.1rem;
+            }
+
+            .profile-box img {
+                max-width: 150px;
+                border-radius: 15px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                margin-bottom: 1rem;
+            }
+
+        .separator {
+            border-top: 1px solid #ddd;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .item-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+            .item-box h2, .profile-box h3 {
+                color: #5eb57a;
+                font-weight: bold;
+            }
+
+            .item-box p {
+                color: #333;
+                font-size: 1.1rem;
+            }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .card h5 {
+                color: #5eb57a;
+                font-weight: bold;
+            }
+
+            .card .card-body {
+                padding: 20px;
+            }
+
+            .card .card-footer {
+                background-color: transparent;
+                border-top: none;
+                padding-bottom: 20px;
+            }
+
+            .card .btn-primary {
+                background-color: #ffdf5d;
+                border-color: #ffdf5d;
+            }
+
+                .card .btn-primary:hover {
+                    background-color: #e6c750;
+                    border-color: #e6c750;
+                }
+
+            .card img {
+                height: 200px;
+                object-fit: cover;
+            }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-box">
+            <h2>Farmer Profile</h2>
+            <div class="row mb-4">
+                <div class="col-md-12 text-center">
+                    @if (!string.IsNullOrEmpty(Model.Farmer.FarmerProfileImageBase64))
+                    {
+                        <img src="data:image;base64,@Model.Farmer.FarmerProfileImageBase64" alt="Farmer Profile Image" />
+                    }
+                    <h3>@Model.Farmer.FarmerName @Model.Farmer.FarmerSurname</h3>
+                    <p>@Model.Farmer.FarmerLocation</p>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="item-box">
+        <h2>Farmer's Listings</h2>
+        <br />
+        <div class="row">
+            @foreach (var item in Model.Items)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(item.itemImageAsBase64))
+                        {
+                            <img src="data:image;base64,@item.itemImageAsBase64" class="card-img-top" alt="@item.itemName" />
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@item.itemName</h5>
+                            <p class="card-text">
+                                Price: R @item.itemPrice
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <a href="@Url.Action("ItemDetails", "Item", new { itemId = item.itemID })" class="btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

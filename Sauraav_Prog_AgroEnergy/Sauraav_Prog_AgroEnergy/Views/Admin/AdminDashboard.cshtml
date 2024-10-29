@@ -1,0 +1,158 @@
+﻿@model List<Sauraav_Prog_AgroEnergy.Models.FarmerModel>
+
+@{
+    ViewData["Title"] = "Admin Dashboard";
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .dashboard-container {
+            padding-top: 75px;
+        }
+
+        .dashboard-heading {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .dashboard-table th, .dashboard-table td {
+            vertical-align: middle;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-color: #ddd;
+        }
+
+        .dashboard-table th {
+            background-color: #5eb57a;
+            color: #fff;
+        }
+
+        .dashboard-actions .btn {
+            min-width: 100px;
+        }
+
+        .dashboard-actions .btn-danger {
+            background-color: #ff4242;
+            border-color: #ff4242;
+        }
+
+            .dashboard-actions .btn-danger:hover {
+                background-color: #e03939;
+                border-color: #e03939;
+            }
+
+        .dashboard-actions .btn-success {
+            background-color: #5eb57a;
+            border-color: #5eb57a;
+        }
+
+            .dashboard-actions .btn-success:hover {
+                background-color: #4da966;
+                border-color: #4da966;
+            }
+
+        .btn-inverse {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+            .btn-inverse:hover {
+                background-color: #5a6268;
+                border-color: #545b62;
+            }
+    </style>
+</head>
+<body>
+    <div class="container dashboard-container">
+        <div class="dashboard-heading">
+            <h2>Admin Dashboard</h2>
+        </div>
+        <div class="btn-group mb-3" role="group" aria-label="Filter Farmers">
+            <a class="btn btn-secondary" href="@Url.Action("AdminDashboard", "Admin", new { filter = "all" })">All</a>
+            <a class="btn btn-secondary" href="@Url.Action("AdminDashboard", "Admin", new { filter = "authenticated" })">Authenticated</a>
+            <a class="btn btn-secondary" href="@Url.Action("AdminDashboard", "Admin", new { filter = "unauthenticated" })">Unauthenticated</a>
+        </div>
+        <table class="table table-striped dashboard-table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Farmer Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var farmer in Model)
+                {
+                    <tr>
+                        <td>@farmer.FarmerName @farmer.FarmerSurname</td>
+                        <td>@farmer.accountEmail</td>
+                        <td class="dashboard-actions">
+                            @if (!farmer.IsApproved)
+                            {
+                                <button class="btn btn-success" onclick="approveFarmer('@farmer.FarmerUID')">Approve</button>
+                            }
+                            else
+                            {
+                                <a class="btn btn-primary" href="@Url.Action("FarmerProfile", "Farmer", new { farmerUID = farmer.FarmerUID })">View Profile</a>
+                            }
+                            <button class="btn btn-danger" onclick="confirmDelete('@farmer.FarmerUID')">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <br />
+    <br />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @section Scripts {
+        <script>
+            async function approveFarmer(farmerUID) {
+                const response = await fetch('/Admin/ApproveFarmer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ FarmerUID: farmerUID }),
+                });
+
+                if (response.ok) {
+                    window.location.reload();
+                } else {
+                    console.error("Failed to approve farmer", response);
+                }
+            }
+
+            async function confirmDelete(farmerUID) {
+                if (confirm("Are you sure you want to delete this farmer's account?")) {
+                    const response = await fetch('/Admin/DeleteFarmerAccount', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ FarmerUID: farmerUID }),
+                    });
+
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        console.error("Failed to delete farmer", response);
+                    }
+                }
+            }
+        </script>
+    }
+</body>
+</html>

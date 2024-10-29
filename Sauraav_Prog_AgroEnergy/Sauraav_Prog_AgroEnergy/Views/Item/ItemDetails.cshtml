@@ -1,0 +1,125 @@
+﻿@model Sauraav_Prog_AgroEnergy.Models.ItemModel
+@{
+    ViewData["Title"] = "Item Detail";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .item-details-container {
+            padding-top: 75px;
+        }
+
+        .item-image {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .item-details-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+            .item-details-box h2 {
+                color: #5eb57a;
+                font-weight: bold;
+                margin-bottom: 1.5rem;
+            }
+
+            .item-details-box p {
+                color: #333;
+                font-size: 1.1rem;
+            }
+
+            .item-details-box .btn-primary {
+                background-color: #5eb57a;
+                border-color: #5eb57a;
+                margin-right: 10px;
+            }
+
+                .item-details-box .btn-primary:hover {
+                    background-color: #4da966;
+                    border-color: #4da966;
+                }
+
+            .item-details-box .btn-secondary {
+                background-color: #999;
+                border-color: #999;
+            }
+
+                .item-details-box .btn-secondary:hover {
+                    background-color: #888;
+                    border-color: #888;
+                }
+    </style>
+</head>
+<body>
+    <div class="container item-details-container">
+        <div class="row">
+            <div class="col-md-6">
+                @if (!string.IsNullOrEmpty(Model.itemImageAsBase64))
+                {
+                    <img src="data:image;base64,@Model.itemImageAsBase64" class="img-fluid item-image" alt="@Model.itemName" />
+                }
+            </div>
+            <div class="col-md-6">
+                <div class="item-details-box">
+                    <h2>@Model.itemName</h2>
+                    <p><strong>Price: R @Model.itemPrice</strong></p>
+                    <p>@Model.itemDescription</p>
+                    @if (Context.Session.GetString("userRole") == "farmer" && Context.Session.GetString("currentUser") != Model.FarmerUID)
+                    {
+                        <button class="btn btn-primary" onclick="addToCart(@Model.itemID)">Add to Cart</button>
+                    }
+                    else if (Context.Session.GetString("userRole") == "farmer")
+                    {
+                        <button class="btn btn-secondary" disabled>This is your item</button>
+                    }
+                    @if (Context.Session.GetString("userRole") == "farmer" && Context.Session.GetString("currentUser") == Model.FarmerUID)
+                    {
+                        <a href="@Url.Action("EditItem", "Item", new { itemId = Model.itemID })" class="btn btn-primary">Edit</a>
+                    }
+                    else if (Context.Session.GetString("userRole") == "admin")
+                    {
+                        <a href="@Url.Action("EditItem", "Item", new { itemId = Model.itemID })" class="btn btn-primary">Edit</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @section Scripts {
+        <script>
+            async function addToCart(itemId) {
+                const response = await fetch('/Cart/AddToCart', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(itemId)
+                });
+
+                if (response.ok) {
+                    alert("Item added to cart");
+                } else {
+                    alert("Failed to add item to cart");
+                }
+            }
+        </script>
+    }
+</body>
+</html>

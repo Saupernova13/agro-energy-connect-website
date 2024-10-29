@@ -1,0 +1,178 @@
+﻿@model Sauraav_Prog_AgroEnergy.Models.MarketplaceViewModel
+@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Marketplace";
+    var searchString = Context.Request.Query["searchString"].ToString();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <style>
+        .marketplace-container {
+            padding-top: 75px;
+        }
+
+        .marketplace-box {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+            .marketplace-box h2 {
+                color: #5eb57a;
+                font-weight: bold;
+                margin-bottom: 1.5rem;
+            }
+
+        .form-control, .btn-primary {
+            border-radius: 5px;
+        }
+
+        .card {
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+        }
+
+            .card h5 {
+                color: #5eb57a;
+                font-weight: bold;
+            }
+
+            .card .card-body {
+                padding: 20px;
+            }
+
+            .card .card-footer {
+                background-color: transparent;
+                border-top: none;
+                padding-bottom: 20px;
+            }
+
+            .card .btn-primary {
+                background-color: #ffdf5d;
+                border-color: #ffdf5d;
+                margin-right: 5px;
+            }
+
+                .card .btn-primary:hover {
+                    background-color: #e6c750;
+                    border-color: #e6c750;
+                }
+
+            .card .btn-secondary {
+                background-color: #999;
+                border-color: #999;
+            }
+
+                .card .btn-secondary:hover {
+                    background-color: #888;
+                    border-color: #888;
+                }
+
+            .card img {
+                height: 200px;
+                object-fit: cover;
+            }
+    </style>
+</head>
+<body>
+    <div class="container marketplace-container">
+        <div class="marketplace-box">
+            <h2>Marketplace</h2>
+            <form asp-action="Marketplace" method="get">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <input type="text" name="searchString" value="@searchString" class="form-control" placeholder="Search for items..." />
+                    </div>
+                    <div class="col-md-4">
+                        <select name="category" class="form-control">
+                            <option value="">All Categories</option>
+                            @foreach (var category in Model.Categories)
+                            {
+                                if (category == Model.SelectedCategory)
+                                {
+                                    <option value="@category" selected="selected">@category</option>
+                                }
+                                else
+                                {
+                                    <option value="@category">@category</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <br />
+        <div class="row">
+            @foreach (var item in Model.Items)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <a href="@Url.Action("ItemDetails", "Item", new { itemId = item.itemID })">
+                            @if (!string.IsNullOrEmpty(item.itemImageAsBase64))
+                            {
+                                <img src="data:image;base64,@item.itemImageAsBase64" class="card-img-top" alt="@item.itemName" />
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@item.itemName</h5>
+                                <p class="card-text">Price: R @item.itemPrice</p>
+                            </div>
+                        </a>
+                        <div class="card-footer">
+                            @{
+                                var userRole = Context.Session.GetString("userRole");
+                                var currentUser = Context.Session.GetString("currentUser");
+                                if (userRole == "farmer" && currentUser != item.FarmerUID)
+                                {
+                                    <button class="btn btn-primary" onclick="addToCart('@item.itemID')">Add to Cart</button>
+                                }
+                                else if (userRole == "farmer")
+                                {
+                                    <button class="btn btn-secondary" disabled>This is your item</button>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <br />
+    <br />
+    <br />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        async function addToCart(itemId) {
+            const response = await fetch('/Cart/AddToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(itemId)
+            });
+
+            if (response.ok) {
+                alert("Item added to cart");
+            } else {
+                alert("Failed to add item to cart");
+            }
+        }
+    </script>
+</body>
+</html>
